@@ -1,4 +1,6 @@
 # Binaries for programs and plugins
+.idea/
+healthcheck.iml
 *.exe
 *.exe~
 *.dll
