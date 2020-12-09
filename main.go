@@ -4,8 +4,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"strings"
+
+)
+
+import (
+	L "./src"
 )
 
 const NginxLogPath string = "../access.log"
@@ -40,6 +44,9 @@ func checkIfContainString(name string, pathFile string) bool {
 
 }
 
+
+
+
 func main() {
 
 	var text string
@@ -54,6 +61,6 @@ func main() {
 		fmt.Println("nginx log does not exists")
 	}
 
-	checkService("varnish")
-
+    L.Demo()
+	L.CheckService("varnish")
 }

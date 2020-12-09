@@ -6,7 +6,13 @@ import (
 	"os/exec"
 )
 
-func checkService(name string) {
+// This func must be Exported, Capitalized, and comment added.
+
+func Demo() {
+	fmt.Println("HI")
+}
+
+func CheckService(name string) {
 	cmd := exec.Command("systemctl", "status", name)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
