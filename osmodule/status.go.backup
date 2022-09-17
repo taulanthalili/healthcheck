@@ -1,0 +1,145 @@
+package osmodule
+
+// StatusInfo is a map[string]uint64 with all the values found in /proc/meminfo
+// type StatusInfo map[string]uint64
+
+/*
+type Status struct {
+	Name   string // Command run by this process.
+	Pid    int    // (1) The process ID.
+	VmSwap uint64 // Used Swap
+
+}
+*/
+
+//re := regexp.MustCompile("[0-9]+")
+//fmt.Println(re.FindAllString("abc123def987asdf", -1)
+
+/*
+// Update s with current values, usign the pid stored in the Stat
+func (s string) UpdateStatus() *Status {
+
+    t := Status{"test",1,2}
+
+	path := filepath.Join("/proc", s, 10), "status")
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Splits on newlines by default.
+	scanner := bufio.NewScanner(file)
+
+	line := 1
+	// https://golang.org/pkg/bufio/#Scanner.Scan
+	for scanner.Scan() {
+		text := scanner.Text()
+		n := strings.Index(text, ":")
+		if n == -1 {
+			continue
+		}
+		key := text[:n] // metric
+		data := strings.Split(strings.Trim(text[(n+1):], " "), " ")
+
+		if strings.Contains(scanner.Text(), "VmSwap") {
+			 t.Name=line[2]
+		}
+
+		line++
+	}
+ return err
+}
+
+
+func (m *StatusInfo) UpdateStatusTest(SwapFile string) error {
+	var err error
+
+	path := filepath.Join(SwapFile)
+
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		text := scanner.Text()
+
+		n := strings.Index(text, ":")
+		if n == -1 {
+			continue
+		}
+
+		key := text[:n] // metric
+		data := strings.Split(strings.Trim(text[(n+1):], "\t "), " ")
+		if len(data) == 1 {
+			value, err := strconv.ParseUint(data[0], 10, 64)
+			if err != nil {
+				continue
+			}
+			(*m)[key] = value
+		} else if len(data) == 2 {
+			if data[1] == "kB" {
+				value, err := strconv.ParseUint(data[0], 10, 64)
+				if err != nil {
+					continue
+				}
+				(*m)[key] = value * 1024
+			}
+		} else {
+			value, err := strconv.ParseUint(data[0], 10, 64)
+			if err != nil {
+				continue
+			}
+			(*m)[key] = value
+		}
+
+	}
+	return nil
+
+}
+
+func (m *StatusInfo) GetSwap() uint64 {
+	d := *m
+	return d["VmSwap"]
+}
+
+func (m *StatusInfo) GetName() uint64 {
+	d := *m
+	return d["Name"]
+}
+
+func (m *StatusInfo) GetPID() uint64 {
+	d := *m
+	return d["Pid"]
+}
+
+func GetSwapInfoTEST() {
+
+	swapinfo := &StatusInfo{}
+	err := swapinfo.UpdateStatusTest("/Users/taulant/Documents/projects/mgt-health-script/6712/status")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(swapinfo.GetSwap(), "% Swap used for PID", swapinfo.GetPID()) // Swap % Used Memory
+
+}
+*/
+
+/*
+The fields are as follows:
+
+              Name   Command run by this process.  Strings longer than
+                     TASK_COMM_LEN (16) characters (including the terminat‐
+                     ing null byte) are silently truncated.
+
+              Pid    Thread ID (see gettid(2)).
+
+
+              VmSwap Swapped-out virtual memory size by anonymous private
+                     pages.
+
+*/
