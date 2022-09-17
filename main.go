@@ -2,65 +2,52 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
-	"strings"
-
+	"github.com/taulanthalili/healthcheck/osmodule"
 )
 
-import (
-	L "./src"
-)
-
-const NginxLogPath string = "../access.log"
-
-func ContainsI(a string, b string) bool {
-	return strings.Contains(
-		strings.ToLower(a),
-		strings.ToLower(b),
-	)
-}
-
-// Exists reports whether the named file or directory exists.
-func Exists(name string) bool {
-	if _, err := os.Stat(name); err != nil {
-		if os.IsNotExist(err) {
-			return false
-		}
-	}
-	return true
-}
-
-func checkIfContainString(name string, pathFile string) bool {
-
-	// read the whole file at once
-	b, err := ioutil.ReadFile(pathFile)
-	if err != nil {
-		panic(err)
-	}
-	s := string(b)
-	// //check whether s contains substring text
-	return ContainsI(s, name)
-
-}
-
-
-
+var partitions = make([]string, 3)
 
 func main() {
 
-	var text string
-	text = "select"
+	//TEST OSMODULE
+	//fmt.Println(osmodule.GetOsArch())
+	//fmt.Println(osmodule.TestOsModule("OS"))
 
-	if Exists(NginxLogPath) {
-		fmt.Println("Nginx log file exist")
-		//check whether s contains substring text
-		fmt.Println(checkIfContainString(text, NginxLogPath))
+	ostmp := osmodule.GetOs()
 
-	} else {
-		fmt.Println("nginx log does not exists")
+	//Check Partitions we use
+	partitions[0] = "/"
+	partitions[1] = "/home"
+	partitions[2] = "/data"
+
+	for i := 0; i < len(partitions); i++ {
+		t := osmodule.CheckPartitionFreePercent(partitions[i])
+
+		if t > 0 {
+			fmt.Println("Partition ", partitions[i], "free space in %:", t)
+
+			if ostmp == "linux" {
+				//osmodule.PrintTopBigDir(partitions[i])
+				osmodule.PrintFilesForDirectory(partitions[i])
+			}
+		}
 	}
 
-    L.Demo()
-	L.CheckService("varnish")
+	osmodule.CheckTopProcessSwap()
+	//osmodule.GetCPUinfoTEST()
+	osmodule.CheckTopProcessCPU()
+	osmodule.CheckTopProcessMemory()
+
+	// osmodule.PrintTopBigDir("/Users/taulant/Documents")
+	//osmodule.PrintTopBigDir("/private/var")
+
+	//TEST NGINXMOD
+	// fmt.Println(nginxmod.TestNginxmod("Nginx"))
+
+	//TEST Service
+	// fmt.Println(services.TestServices("Services"))
+
+	//TEST Magento
+	// fmt.Println(magento.TestMagento("Magento"))
+
 }
